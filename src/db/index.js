@@ -1,4 +1,3 @@
-require("dotenv").config();
 const Sequelize = require("sequelize");
 const { DATABASE_NAME, DATABASE_USERNAME, DATABASE_PASSWORD } = process.env;
 
