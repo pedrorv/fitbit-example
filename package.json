@@ -12,6 +12,9 @@
   "dependencies": {
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
-    "fitbit-node": "^2.1.0"
+    "fitbit-node": "^2.1.0",
+    "moment": "^2.22.2",
+    "sequelize": "^4.37.10",
+    "sqlite3": "^4.0.0"
   }
 }
