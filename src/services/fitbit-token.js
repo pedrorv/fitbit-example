@@ -6,6 +6,13 @@ class FitbitTokenService {
       where: { accessToken, refreshToken }
     }).spread(fitbitToken => fitbitToken);
   }
+
+  static last() {
+    return FitbitTokenModel.findAll({
+      limit: 1,
+      order: [["createdAt", "DESC"]]
+    }).then(tokens => tokens[0] || null);
+  }
 }
 
 module.exports = FitbitTokenService;

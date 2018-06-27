@@ -1,4 +1,5 @@
 const FitbitAPIClient = require("fitbit-node");
+const FitbitTokenService = require("../services/fitbit-token");
 
 class FitbitAPI {
   constructor() {
@@ -19,8 +20,22 @@ class FitbitAPI {
     return this.client.getAccessToken(code, process.env.FITBIT_CALLBACK);
   }
 
-  refreshAccessToken(accessToken, refreshToken) {
-    return this.client.refreshAccessToken(accessToken, refreshToken);
+  async refreshAccessToken() {
+    const lastToken = await FitbitTokenService.last();
+    if (!lastToken) return null;
+
+    const refreshedToken = await this.client.refreshAccessToken(
+      lastToken.accessToken,
+      lastToken.refreshToken
+    );
+    if (!refreshedToken) return null;
+
+    const {
+      access_token: accessToken,
+      refresh_token: refreshToken
+    } = refreshedToken;
+
+    return FitbitTokenService.create(accessToken, refreshToken);
   }
 
   get(path, accessToken) {
