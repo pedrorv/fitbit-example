@@ -38,8 +38,15 @@ class FitbitAPI {
     return FitbitTokenService.create(accessToken, refreshToken);
   }
 
-  get(path, accessToken) {
-    return this.client.get(path, accessToken, process.env.FITBIT_USER);
+  async get(path) {
+    const lastToken = await FitbitTokenService.last();
+    if (!lastToken) return null;
+
+    return this.client.get(
+      path,
+      lasttoken.accessToken,
+      process.env.FITBIT_USER
+    );
   }
 }
 

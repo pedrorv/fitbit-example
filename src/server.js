@@ -3,6 +3,7 @@ const express = require("express");
 const FitbitAPI = require("./api/fitbit");
 const FitbitTokenService = require("./services/fitbit-token");
 const { sequelize } = require("./db");
+const { hours } = require("./utilities/time");
 
 const PORT = process.env.PORT || 3000;
 
@@ -26,7 +27,8 @@ app.get("/callback", (req, res) => {
     });
 });
 
-app.on("db-ready", () =>
-  app.listen(PORT, () => console.log(`Server listening on port ${PORT}.`))
-);
+app.on("db-ready", () => {
+  app.listen(PORT, () => console.log(`Server listening on port ${PORT}.`));
+  setInterval(() => FitbitAPI.refreshAccessToken(), hours(4));
+});
 sequelize.authenticate().then(() => app.emit("db-ready"));
