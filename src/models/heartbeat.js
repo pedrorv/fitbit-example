@@ -9,4 +9,6 @@ const Heartbeat = sequelize.define("heartbeat", {
   }
 });
 
+Heartbeat.sync();
+
 module.exports = Heartbeat;

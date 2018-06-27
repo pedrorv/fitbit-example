@@ -9,4 +9,6 @@ const FitbitToken = sequelize.define("fitbit_token", {
   }
 });
 
+FitbitToken.sync();
+
 module.exports = FitbitToken;
