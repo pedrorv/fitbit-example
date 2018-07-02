@@ -2,8 +2,9 @@ require("dotenv").config();
 const express = require("express");
 const FitbitAPI = require("./api/fitbit");
 const FitbitTokenService = require("./services/fitbit-token");
+const HeartbeatService = require("./services/heartbeat");
 const { sequelize } = require("./db");
-const { hours } = require("./utilities/time");
+const { hours, seconds } = require("./utilities/time");
 
 const PORT = process.env.PORT || 3000;
 
@@ -30,5 +31,11 @@ app.get("/callback", (req, res) => {
 app.on("db-ready", () => {
   app.listen(PORT, () => console.log(`Server listening on port ${PORT}.`));
   setInterval(() => FitbitAPI.refreshAccessToken(), hours(4));
+  setInterval(() => {
+    console.log(`Getting new heartbeat records`);
+    FitbitAPI.getTodaysHeartIntraday().then(data =>
+      HeartbeatService.storeIntradayActivity(data)
+    );
+  }, seconds(25));
 });
 sequelize.authenticate().then(() => app.emit("db-ready"));
