@@ -38,13 +38,19 @@ class FitbitAPI {
     return FitbitTokenService.create(accessToken, refreshToken);
   }
 
+  async getTodaysHeartIntraday() {
+    const data = await this.get("/activities/heart/date/today/1d/1sec.json");
+
+    return data[0];
+  }
+
   async get(path) {
     const lastToken = await FitbitTokenService.last();
     if (!lastToken) return null;
 
     return this.client.get(
       path,
-      lasttoken.accessToken,
+      lastToken.accessToken,
       process.env.FITBIT_USER
     );
   }
