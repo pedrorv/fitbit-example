@@ -11,14 +11,18 @@ class HeartbeatService {
   static last() {
     return HeartbeatModel.findAll({
       limit: 1,
-      order: [["createdAt", "DESC"]]
+      order: [["timestamp", "DESC"]]
     }).then(heartbeats => heartbeats[0] || null);
   }
 
   static async storeIntradayActivity(data) {
     const transformedData = this.transformResponse(data);
+    const lastRecord = await this.last();
+    const activities = !lastRecord
+      ? transformedData
+      : transformedData.filter(a => a.timestamp > lastRecord.timestamp);
 
-    for (let activity of transformedData) {
+    for (let activity of activities) {
       const { amount, timestamp } = activity;
       await this.create(amount, timestamp);
     }
