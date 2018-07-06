@@ -38,7 +38,9 @@ app.get("/heartbeat", (req, res) => {
 });
 
 app.on("db-ready", () => {
-  app.listen(PORT, () => console.log(`Server listening on port ${PORT}.`));
+  app.listen(PORT, "0.0.0.0", () =>
+    console.log(`Server listening on port ${PORT}.`)
+  );
   setInterval(() => FitbitAPI.refreshAccessToken(), hours(4));
   setInterval(() => {
     console.log(`Getting new heartbeat records`);
