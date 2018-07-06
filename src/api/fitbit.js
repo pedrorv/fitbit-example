@@ -41,7 +41,7 @@ class FitbitAPI {
   async getTodaysHeartIntraday() {
     const data = await this.get("/activities/heart/date/today/1d/1sec.json");
 
-    return data[0];
+    return data ? data[0] : [];
   }
 
   async get(path) {
