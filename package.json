@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon ./src/server.js"
+    "dev": "nodemon ./src/server.js",
+    "production": "PORT=80 pm2 start ./src/server.js"
   },
   "keywords": [],
   "author": "",
