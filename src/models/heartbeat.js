@@ -4,7 +4,7 @@ const Heartbeat = sequelize.define(
   "heartbeat",
   {
     amount: {
-      type: Sequelize.STRING
+      type: Sequelize.INTEGER
     },
     timestamp: {
       type: Sequelize.INTEGER
