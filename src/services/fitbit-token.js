@@ -9,6 +9,7 @@ class FitbitTokenService {
 
   static last() {
     return FitbitTokenModel.findAll({
+      raw: true,
       limit: 1,
       order: [["createdAt", "DESC"]]
     }).then(tokens => tokens[0] || null);
