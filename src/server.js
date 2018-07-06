@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const csv = require("csv-express");
 const FitbitAPI = require("./api/fitbit");
 const FitbitTokenService = require("./services/fitbit-token");
 const HeartbeatService = require("./services/heartbeat");
@@ -26,6 +27,14 @@ app.get("/callback", (req, res) => {
     .catch(err => {
       res.status(err.status).send(err);
     });
+});
+
+app.get("/heartbeat", (req, res) => {
+  const { from, to } = req.query;
+
+  HeartbeatService.getAll(from, to).then(heartbeats => {
+    res.csv(heartbeats, true);
+  });
 });
 
 app.on("db-ready", () => {
